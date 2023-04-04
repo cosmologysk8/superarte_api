@@ -15,7 +15,7 @@ public class GabineteController {
     @Autowired
     GabineteService gabineteService;
 
-    @GetMapping
+    @GetMapping(value = "/listar")
     public List<Gabinete> getAllGabinetes(){
         List<Gabinete> listarGabinetes = gabineteService.listAllGabinetes();
         return listarGabinetes;
@@ -33,13 +33,13 @@ public class GabineteController {
         return gabineteFoundById;
     }
 
-    @PostMapping
+    @PostMapping(value = "/crear")
     public Gabinete createGabinete(@RequestBody Gabinete gabinete){
         Gabinete newGabinete = gabineteService.createGabinete(gabinete);
         return newGabinete;
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/editar/{id}")
     public ResponseEntity<Gabinete> updateGabinete(@PathVariable("id") Long id, @RequestBody Gabinete gabinete){
         gabinete.setId(id);
         Gabinete gabineteToUpdated = gabineteService.updateGabinete(gabinete);

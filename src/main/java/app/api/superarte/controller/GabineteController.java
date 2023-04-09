@@ -21,7 +21,7 @@ public class GabineteController {
         return listarGabinetes;
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/id/{id}")
     public Gabinete getGabineteById(@PathVariable("id") Long id){
         Gabinete gabineteFoundById = gabineteService.getGabineteById(id).orElse(null);
         return gabineteFoundById;

@@ -1,6 +1,5 @@
 package app.api.superarte;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,10 +41,18 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests()
+//        Aquí, usamos antMatchers() en lugar de requestMatchers() para poder especificar patrones de URL más complejos.
+//        Con .antMatchers("/gabinetes/delete/**").hasRole("ADMIN"), estamos permitiendo el acceso solo a los usuarios
+//        con el rol "ADMIN" a todos los endpoints que comienzan con "/gabinetes/delete/".
+
+        http.csrf().disable().authorizeHttpRequests()
                 .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/gabinetes/listar").hasAnyRole("USER")
+                .requestMatchers("/gabinetes/id/**").hasAnyRole("USER")
+                .requestMatchers("/gabinetes/direccion/**").hasAnyRole("USER")
                 .requestMatchers("/gabinetes/delete/**").hasAnyRole("ADMIN")
+                .requestMatchers("/gabinetes/crear").hasAnyRole("ADMIN")
+                .requestMatchers("/gabinetes/editar/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
@@ -55,10 +62,7 @@ public class SpringSecurityConfig {
                 .httpBasic()
                 .authenticationEntryPoint((request, response, authException) -> {
                     System.out.println("Autenticación fallida: " + authException.getMessage());
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
-                })
-                .and()
-                .csrf().disable();
+                });
 
         return http.build();
     }

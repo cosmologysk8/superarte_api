@@ -1,9 +1,6 @@
 package app.api.superarte.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,16 +20,20 @@ public class Role {
     @Column(name = "role_user")
     private RolesEnum roles;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Users id_user;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return id.equals(role.id) && roles == role.roles;
+        return id.equals(role.id) && roles == role.roles && id_user.equals(role.id_user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, roles);
+        return Objects.hash(id, roles, id_user);
     }
+
 }

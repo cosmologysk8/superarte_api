@@ -39,28 +39,27 @@ public class Users {
     @NotEmpty
     private String direccion;
 
-
     private String password;
+
+    private Boolean enabled;
 
     @ManyToOne(fetch = FetchType.LAZY) // Miramos Primero La entidad que seria user y luego la que declaramos, gabinete
     @JoinColumn(name = "id_gabinete", referencedColumnName = "id")
     private Gabinete gabinete_id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_roles", referencedColumnName = "id")
-    private Role role_user;
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Users users = (Users) o;
-        return id.equals(users.id) && email.equals(users.email) && nombre.equals(users.nombre) && fecha_nacimiento.equals(users.fecha_nacimiento) && Objects.equals(telefono, users.telefono) && Objects.equals(direccion, users.direccion) && password.equals(users.password) && gabinete_id.equals(users.gabinete_id) && role_user.equals(users.role_user);
+        return id.equals(users.id) && email.equals(users.email) && nombre.equals(users.nombre) && fecha_nacimiento.equals(users.fecha_nacimiento) && Objects.equals(telefono, users.telefono) && Objects.equals(direccion, users.direccion) && password.equals(users.password) && gabinete_id.equals(users.gabinete_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, nombre, fecha_nacimiento, telefono, direccion, password, gabinete_id, role_user);
+        return Objects.hash(id, email, nombre, fecha_nacimiento, telefono, direccion, password, gabinete_id);
     }
 
     @Override
@@ -74,7 +73,6 @@ public class Users {
                 ", direccion='" + direccion + '\'' +
                 ", password='" + password + '\'' +
                 ", gabinete_id=" + gabinete_id +
-                ", role_user=" + role_user +
                 '}';
     }
 }

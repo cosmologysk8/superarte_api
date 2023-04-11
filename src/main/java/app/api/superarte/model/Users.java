@@ -10,14 +10,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class Users {
+public class Users implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +29,7 @@ public class Users {
 
     @Email
     @NotNull
+    @Column(unique = true)
     private String email;
 
     @NotEmpty
@@ -43,11 +48,13 @@ public class Users {
 
     private Boolean enabled;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Role> roles;
+
     @ManyToOne(fetch = FetchType.LAZY) // Miramos Primero La entidad que seria user y luego la que declaramos, gabinete
     @JoinColumn(name = "id_gabinete", referencedColumnName = "id")
     private Gabinete gabinete_id;
-
-
 
     @Override
     public boolean equals(Object o) {
